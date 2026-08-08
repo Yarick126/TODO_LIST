@@ -2,6 +2,6 @@
 class View {
 
     function generatePage($content, $data = null){
-        include 'app/View/template.php';
+        include 'app/view/template.php';
     }
 }

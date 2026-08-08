@@ -1,7 +1,7 @@
 <?php 
     class Model {
-
-        public function getAll(){
-            
-        }
+        protected function getUser($userId){}
+        protected function logout($userId){}
+        protected function addUser($userData){}
+        protected function checkUser($userData){}
     }

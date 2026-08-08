@@ -1,5 +1,5 @@
 
-        <form onsubmit="validateForm()" action="user?action=register" method="POST">
+        <form onsubmit="validateForm()" action="auth?action=register" method="POST">
             <h2 class="title">Sign up</h2>
             <div class="field">
                 <label for="1">name</label>
@@ -18,9 +18,14 @@
                 <span class="errorMsg" name="repeatPasswordError">Passwords are not the same!</span>
                 <input required type="password" name="repeatPassword" id="4">
             </div>
+            <?php if(isset($data['errorMessage'])):?>
+                <div class="errorMsg">
+                    <?=$data['errorMessage']?>
+                </div>
+            <?php endif?>
             <input type="submit" value="Sign Up">
         </form>
         <div class="altern">
             <span>Already have an account?</span>
-            <a href="user?action=signInForm">Sign in</a>
+            <a href="auth?login=yes">Sign in</a>
         </div>

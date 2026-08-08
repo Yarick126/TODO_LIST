@@ -1,46 +1,36 @@
 <?php 
 
 class User_Model extends Model{
-    private static $token = '';
 
-    private static function generateToken(){
-        self::$token = bin2hex(random_bytes(15));
-    }
-
-    public function addUser($userData){
-        if(!$userData){
-            return;
-        }
+    function getUser($userId){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $user = $ms->query("SELECT  * FROM users WHERE email = '" . $userData->email . "'")->fetch_assoc();
-        if($user){
-            return;
-        }
-        self::generateToken();
-        $ms->query("INSERT INTO users(name, email, password, token) VALUES ('" . $userData->name . "' ," . "'" . $userData->email . "' , " . "'" . $userData->password . "' , " . "'" . self::$token . "')");
-        $ms->close();
-
-        return [$userData->name, $userData->email, self::$token];
-    }
-
-    public function checkUser($userData){
-        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $user = $ms->query("SELECT name , email, image, password FROM users WHERE email = '" . $userData[0] . "'")->fetch_assoc();
+        $user = $ms->query("SELECT * FROM users WHERE idusers = " . $userId)->fetch_assoc();
         if(!$user){
             $ms->close();
-            return;
+            throw new Exception('User not found!', 501);    
         }
-        if(!password_verify($_POST['password'], $user['password'])){
-            $ms->close();
-            return;
+
+        if(!isset($_COOKIE['token'])){
+            throw new Exception('Not authorized user!',401);
         }
-        self::generateToken();
-        $ms->query("UPDATE users SET token = '" . self::$token . "' WHERE email = '" . $user['email'] . "'");
+        /*if($_COOKIE['token']!=$user['token']){
+            throw new Exception('Not authorized user!',401);
+        }*/
+        $userData = [
+            'userId' => $user['idusers'],
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'image' => $user['image'],
+            'token' => $_COOKIE['token']
+        ];
         $ms->close();
-        return [$user, self::$token];
+        return $userData;
     }
 
-    public function logout(){
-        
+    function logout($userId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $ms->query("UPDATE users SET token = '' WHERE idusers = " . $userId);
+        setcookie('token', '');
+        $ms->close();
     }
 }
