@@ -7,3 +7,9 @@ function validateForm(){
     }
     
 }
+
+function wideSidebar(e){
+
+    e.target.style.width = e.target.style.width == '300px'? '35px' : '300px';
+    
+}

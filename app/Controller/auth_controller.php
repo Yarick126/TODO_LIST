@@ -8,13 +8,7 @@ class Auth_Controller extends Controller{
     }
 
     public function default(){
-        if(isset($_GET['register'])){
-            $this->view->generatePage('registration_template.php');
-        }
-        else {
-            $this->view->generatePage('login_template.php');
-        }
-        
+        $this->view->generatePage('login_template.php');        
     }
 
 
