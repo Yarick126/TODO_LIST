@@ -28,6 +28,11 @@ a {
 a:visited{
     color: white;
 }
+
+input {
+    background-color: #1B6392;
+    color: white;
+}
 html{
     width: 100%;
 }
@@ -39,8 +44,6 @@ img {
 button {
     font-family: "IBM Plex Sans", sans-serif;
     font-weight: 600;
-    background-color: #0f0f83;
-    color: white;
     padding: 15px;
     outline: none;
     border: none;
@@ -50,8 +53,21 @@ button:hover{
     cursor: pointer;
 }
 
-.disabled {
-    background-color: rgba(0, 0, 0, 0.5);
+a:hover {
+    cursor: pointer;
+}
+
+.red{
+    background-color: red;
+}
+
+.errorMsg {
+    color: red;
+}
+
+.active {
+    background-color: #0f0f83;
+    color: white;
 }
 
 main {

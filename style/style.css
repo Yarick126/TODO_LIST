@@ -14,26 +14,49 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding-top: 100px;
 }
 
 .auth form {
+    width: 510px;
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    row-gap: 100px;
+    border: solid 5px #0f0f83;
+    padding: 15px;
+    background-color: #1B6392;
 }
 
 .auth form .field {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.auth form .field label {
+    font-size: 18px;
+    color: white;
+}
+.auth form .field input {
+    padding: 15px;
+    font-size: 18px;
+}
+
+.auth form>input {
+    width: fit-content;
+    padding: 15px;
+    background-color: #0f0f83;
+    border: 1px solid #0f0f83;
+    color: white;
+    font-weight: 600;
 }
 
 .auth .choose_auth{
     display: flex;
     flex-direction: row;
-    width: 250px;
+    width: 550px;
 }
 
 .auth .choose_auth button {
@@ -42,4 +65,69 @@
 
 .auth .register{
     display: none;
+}
+
+
+.about{
+    width: -webkit-fill-available;
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.about h1{
+    margin-bottom: 20px;
+}
+
+.about hr{
+    height: 5px;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.about ul {
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+
+.settings {
+    width: -webkit-fill-available;
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.settings h1 {
+    margin-bottom: 20px;
+
+}
+
+.settings hr {
+    height: 5px;
+    margin-bottom: 20px;
+}
+
+.settings .mode{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.settings .mode button:hover {
+    background-color: black;
+    color: white;
 }

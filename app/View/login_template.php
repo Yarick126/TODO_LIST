@@ -1,16 +1,15 @@
 <div class="auth">
     <div class="choose_auth">
-        <button disabled class="disabled">LOGIN</button>
-        <button>REGISTRATION</button>
+        <button class="active" onclick="openLogin(event)">ВОЙТИ</button>
+        <button  onclick="openRegistration(event)">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
     </div>
     <form action="auth?action=login" method="POST" class="login">
-        <h2 class="title">Sign in</h2>
         <div class="field">
-            <label for="">email</label>
+            <label for="">Почта</label>
             <input name='email' required type="email">
         </div>
         <div class="field">
-            <label for="">password</label>
+            <label for="">Пароль</label>
             <input name="password" required type="password">
         </div>
         <?php if(isset($data['errorMessage'])):?>
@@ -18,25 +17,24 @@
                 <?=$data['errorMessage']?>
             </div>
         <?php endif?>
-        <input type="submit" value="Sign In">
+        <input type="submit" value="Войти">
     </form>
     <form onsubmit="validateForm()" action="auth?action=register" method="POST" class="register">
-        <h2 class="title">Sign up</h2>
         <div class="field">
-            <label for="1">name</label>
+            <label for="1">Имя</label>
             <input required type="name" name="name" id="1">
         </div>
         <div class="field">
-            <label for="2">email</label>
+            <label for="2">Почта</label>
             <input required type="email" name="email" id="2">
         </div>
         <div class="field">
-            <label for="3">password</label>
+            <label for="3">Поароль</label>
             <input required type="password" name="password" id="3">
         </div>
         <div class="field">
-            <label for="4">repeat password</label>
-            <span class="errorMsg" name="repeatPasswordError">Passwords are not the same!</span>
+            <label for="4">Повторите пароль</label>
+            <span class="errorMsg" name="repeatPasswordError">Пароли не совпадают!</span>
             <input required type="password" name="repeatPassword" id="4">
         </div>
         <?php if(isset($data['errorMessage'])):?>
@@ -44,7 +42,7 @@
                 <?=$data['errorMessage']?>
             </div>
         <?php endif?>
-        <input type="submit" value="Sign Up">
+        <input type="submit" value="Зарегестрироваться">
     </form>
 </div>
         
