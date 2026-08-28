@@ -16,9 +16,10 @@ class Auth_Model extends Model{
         }
         self::generateToken();
         $ms->query("INSERT INTO users(name, email, password, token) VALUES ('" . $userData['name'] . "' ," . "'" . $userData['email'] . "' , " . "'" . $userData['password'] . "' , " . "'" . self::$token . "')");
+        $id = $ms->insert_id;
         $ms->close();
         setcookie('token', self::$token);
-        return ['name' => $userData['name'], 'email'=> $userData['email']];
+        return ['name' => $userData['name'], 'email'=> $userData['email'] , 'userId' => $id];
     }
 
     function checkUser($userData){

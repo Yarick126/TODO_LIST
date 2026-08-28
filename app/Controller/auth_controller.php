@@ -30,14 +30,15 @@ class Auth_Controller extends Controller{
 
         if(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['name'])){
             try{
-                $this->view->generatePage('profile_template.php',$this->model->addUser([
+                $userData = $this->model->addUser([ 
                     'email' => $_POST['email'],
                     'name' => $_POST['name'],
                     'password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
-                ]));
+                ]);
+                redirect("user?userId=" . $userData['userId']);
             }
             catch(Exception $er){
-                $this->view->generatePage('sign-up-template.php',[ 'errorMessage' => $er->getMessage()]);
+                $this->view->generatePage('login_template.php',[ 'errorMessage' => $er->getMessage()]);
             }
         }
        

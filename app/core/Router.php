@@ -11,13 +11,13 @@
             if(isset($_GET['action'])){
                 $action_name = $_GET['action'];
             }
-            $controller_file = $controller_name . '_Controller.php';
+            $controller_file = $controller_name . '_controller.php';
             $controller_path = 'app/controller/' . $controller_file;
             if(file_exists($controller_path)){
                 include $controller_path;
             }
             else {
-                throw new Exception("NOT FOUND: " . $controller_path, 404);
+                throw new Exception("Cant find controller path: " . $controller_path, 501);
             }
             $model_file = ucfirst($controller_name) . '_model.php';
             $model_path = 'app/model/' . $model_file;
@@ -25,7 +25,7 @@
                 include $model_path;
             }            
             else {
-                throw new Exception("Server problem", 501);
+                throw new Exception("Cant find module: " . $model_path, 501);
             }
             
             $controller_class = ucfirst($controller_name) . '_Controller';

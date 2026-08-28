@@ -22,24 +22,45 @@
     <main>
         <div class="sidebar" onclick="wideSidebar(event)">
             <div class="profile_logo">
-                <a href="auth?login=yes">
-                    <img src="images/account.png" alt="404">
-                    <span>Войти</span>
-                </a>
+                <?php if(!isset($_COOKIE['token'])){?>
+                    <a href="auth">
+                        <img src="images/account.png" alt="404">
+                        <span>Войти</span>
+                    </a>
+                <?php } else {?>
+                    <a href=<?="user?userId=" . $data['user']['userId']?> class="profile_link">
+                        <img src=<?=$data['user']['image']?> alt="404">
+                        <span><?=$data['user']['name']?></span>
+                    </a>
+                <?php }?>
             </div>
+            <?php if(isset($_COOKIE['token'])){?>
+                <div class="friends">
+                    <a href=<?= "user?action=openFriends&userId=" . $data['user']['userId']?>>
+                        <img src="images/friends.png" alt="404">
+                        <span>Друзья</span>
+                    </a>
+                </div>
+                <div class="logout">
+                    <a href=<?= "user?action=logout&userId=" . $data['user']['userId'] ?>>
+                        <img src="images/logout.png" alt="404">
+                        <span>Выйти</span>
+                    </a>
+                </div>
+            <?php }?>
             <div class="settings_about_app">
                 <hr>
-                <a href="settings"class="settings_logo">
+                <a href="<?="user?action=openSettings&userId=". $data['user']['userId']?>" class="settings_logo">
                     <img src="images/settings.png" alt="404">
                     <span>Настройки</span>
                 </a>
-                <a href="about" class="about_app_logo">
+                <a href="<?="user?action=openAboutApp&userId=". $data['user']['userId']?>" class="about_app_logo">
                     <img src="images/info.png" alt="404">
                     <span>О приложении</span>
                 </a>
             </div>
         </div>
-        <?php include 'app/view/' . $content ?>
+        <?php include 'app/view/' . $content?>
     </main>
     <script src="scripts/scripts.js"></script>
 </body>

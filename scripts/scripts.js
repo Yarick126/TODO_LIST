@@ -37,6 +37,20 @@ function openRegistration(e){
     }
 }
 
+function closeAddFriendsForm(e){
+    console.log(this);
+    
+
+    const modalWindow = document.getElementById('modal_form');
+    modalWindow.close();
+    
+}
+
+function openAddFriendsForm(){
+    const modalWindow = document.getElementById('modal_form');
+    modalWindow.showModal();
+}
+
 
 function setDarkMode() {
     localStorage.setItem('mode','dark')
