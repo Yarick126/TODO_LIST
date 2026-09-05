@@ -13,7 +13,6 @@ class Auth_Controller extends Controller{
 
 
     public function login(){
-
         if(isset($_POST['email']) && isset($_POST['password'])){
             try{
                 $userData = $this->model->checkUser([

@@ -4,8 +4,22 @@
     margin: 0;
     padding: 0;
 }
+:root {
+    --bg-color: white;
+    --text-color: black;
+}
 
+.dark_mode{
+    --bg-color: rgb(39, 39, 39);
+    --text-color: white;
+}
 
+@media (prefers-color-scheme: dark){
+    :root {
+        --bg-color: white;
+        --text-color: black;
+    }
+}
 body{
     width: 100%;
     display: flex;
@@ -17,6 +31,8 @@ body{
     font-style: normal;
     font-variation-settings:
         "wdth" 100;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 a {
     font-family: "IBM Plex Sans", sans-serif;
@@ -99,7 +115,9 @@ header .todo_logo {
 .sidebar:hover {
     cursor: pointer;
 }
-
+.sidebar>div{
+    overflow: hidden;
+}
 
 .sidebar .profile_logo a{
     display: flex;

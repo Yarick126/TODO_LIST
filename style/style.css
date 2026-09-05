@@ -237,13 +237,13 @@
     color: #0f0f83;
 }
 
-.friend_list form .friends {
+.friend_list form .friends_items_list {
     display: flex;
     flex-direction: column;
     row-gap: 15px;
 }
 
-.friend_list form .friends a {
+.friend_list form .friends_items_list a {
     width: 200px;
     padding: 5px 15px;
     display: flex;
@@ -255,7 +255,7 @@
     transition: all 0.5s;
 }
 
-.friend_list form .friends a:hover {
+.friend_list form .friends_items_list a:hover {
     background-color: white;
     color: #0f0f83;
 }

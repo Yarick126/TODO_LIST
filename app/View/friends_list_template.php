@@ -1,26 +1,32 @@
 <div class="friend_list">
     <button class="add_friend" onclick="openAddFriendsForm()"><img src="images/add.png" alt="404"> Добавить друга</button>
     <dialog id="modal_form" onclick="closeAddFriendsForm(event)">
-        <form action="friend?action=addFriend" class="add_friend_form" onclick="event.stopPropagation()">
+        <form class="add_friend_form" action="<?="user?action=findFriend&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
             <div class="close">
                 <button type="button" onclick="closeAddFriendsForm(event)"><img src="images/close.png" alt="404" ></button>
             </div>
             <div class="field">
                 <label for="friend_name">Введите никнейм пользователя: </label>
-                <input type="text">
+                <input type="text" class="searchFriendInput" name="friend_name">
             </div>
             <div class="friends_items">
-                <div class="friends">
-                    <?php foreach($data['users'] as $key => $friend):?>
-                        <a name="<?=$key?>" href=<?="user?action=addFriend&userId=" . $data['user']['userId']?>>
+                <div class="friends_items_list">
+                    <?php 
+                    if(!empty($data['users'])){
+                        foreach($data['users'] as $key => $friend){?>
+                        <?php $status = ''; 
+                            if(isset($friend['status'])){
+                                $status = $friend['status'];
+                            }
+                        ?>
+                        <a name="<?="friend_" . $key?>" href=<?="user?action=addFriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['userId']?>>
                             <img class="friend_image" src="<?=$friend['image']?>" alt="404">
-                            <?=$friend['name']?>
+                            <?=$friend['name'] . " " . $status?>
                         </a>
-                    <?php endforeach?>
+                    <?php }}?>
                 </div>
             </div>
-
-            <input type="submit" value="Найти">
+            <input type="submit" value="Найти" >
         </form>
     </dialog>
 </div>

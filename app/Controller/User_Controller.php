@@ -8,14 +8,21 @@ class User_Controller extends Controller {
         $this->view = new View();
     }
     public function default(){
-        if(isset($_GET['userId'])){
+        $userData = [];
+        if(isset($_GET['userId']) || isset($_COOKIE['token'])){
             try{
-                $this->view->generatePage('profile_template.php', [ 'user' => $this->model->getUser($_GET['userId'])]);
+                $userData = $this->model->getUser();
             }
             catch(Exception $er){
-                redirect('auth?login=yes');
+                redirect('auth');
             }
         }
+        else {
+            $this->view->generatePage('welcome_template.php');
+        }
+
+        $this->view->generatePage('profile_template.php', ["user" => $userData]);
+
     }
 
     public function logout(){
@@ -30,10 +37,10 @@ class User_Controller extends Controller {
         }
 
     }
-    public function openFriends(){
+    public function openFriends($users=[]){
         if(isset($_GET['userId'])){
             try{
-                $this->view->generatePage('friends_list_template.php', ['user' => $this->model->getUser($_GET['userId']),'users' => $this->model->getAllUsers()]);
+                $this->view->generatePage('friends_list_template.php', ['user' => $this->model->getUser(), 'users'=>$users]);
             }
             catch(Exception $er){
                 redirect('auth?login=yes');
@@ -42,28 +49,54 @@ class User_Controller extends Controller {
     }
 
     public function openSettings(){
+        $userData = [];
         if(isset($_GET['userId'])){
-            try{
-                $this->view->generatePage('settings_template.php', ['user' => $this->model->getUser($_GET['userId'])]);
-            }
-            catch(Exception $er){
-                redirect('auth?login=yes');
-            }
+           $userData = ['user' => $this->model->getUser()];
+        }
+
+        try{
+            $this->view->generatePage('settings_template.php', $userData);
+        }
+        catch(Exception $er){
+            redirect('auth?login=yes');
         }
     }
 
     public function openAboutApp(){
+        $userData = [];
         if(isset($_GET['userId'])){
-            try{
-                $this->view->generatePage('about_template.php', ['user' => $this->model->getUser($_GET['userId'])]);
-            }
-            catch(Exception $er){
-                redirect('auth?login=yes');
-            }
+           $userData = ['user' => $this->model->getUser()];
+        }
+        try{
+            $this->view->generatePage('about_template.php', $userData);
+        }
+        catch(Exception $er){
+            redirect('auth?login=yes');
         }
     }
 
     public function addFriend(){
-        
+        if(isset($_GET['userId']) && isset($_GET['friendId'])){
+            try{
+                $this->model->addFriend($_GET['userId'],$_GET['friendId']);
+            }
+            catch(Exception $er){
+                echo($er->getMessage());
+            }
+        }
+    }
+
+    public function findFriend(){
+        $users= [];
+        if(isset($_POST['friend_name']) && $_POST['friend_name'] != ''){
+            try{
+                $users = $this->model->getAllUsers();
+            }
+            catch(Exception $er){
+                echo($er->getMessage());
+            }
+        }
+
+        $this->openFriends($users);
     }
 }

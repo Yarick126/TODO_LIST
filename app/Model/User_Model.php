@@ -2,11 +2,20 @@
 
 class User_Model extends Model{
 
-
     function getAllUsers(){
+        $stats  = [
+            "request" =>'Запрос отправлен',
+            "accepted" => 'Друг',
+            "rejected" => 'Отклонён'
+        ];
+        $userData = [];
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $users = $ms->query("SELECT idusers ,name, image FROM users ")->fetch_all();
+        $users = $ms->query("SELECT idusers ,name, image FROM users WHERE name LIKE '" . $_POST['friend_name'] . "%'")->fetch_all();
+        $stats = $ms->query("SELECT status, id_to FROM friends")->fetch_all();
         foreach($users as $key => $user){
+            if($user[0]==$_GET['userId']){
+                continue;
+            }
             $userData[$key] = [
                 'userId' => $user[0],
                 'name' => $user[1],
@@ -15,21 +24,39 @@ class User_Model extends Model{
             if($userData[$key]['image'] == ''){
                 $userData[$key]['image'] = "images/account.png";
             }
+            foreach($stats as $stat){
+                if($userData[$key]['userId'] == $stat[1]){
+                    switch($stat[0]){
+                        case 'request':
+                            $userData[$key]['status'] = 'Запрос отправлен';
+                            break;
+                        case 'accepted':
+                            $userData[$key]['status'] = 'Друг';
+                            break;
+                        case 'rejected':
+                            $userData[$key]['status'] = 'Запрос отклонен';
+                            break;
+                    }
+                }
+            }
+
         }
 
+        $ms->close();
         return $userData;
     }
 
-    function getUser($userId){
+    function getUser( ){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $user = $ms->query("SELECT * FROM users WHERE idusers = " . $userId)->fetch_assoc();
+        if(isset($_GET['userId'])){
+            $user = $ms->query("SELECT * FROM users WHERE idusers = " . $_GET['userId'])->fetch_assoc();
+        }
+        if(isset($_COOKIE['token']) != 0 && !isset($user)){
+            $user = $ms->query("SELECT * FROM users WHERE token = '" . $_COOKIE['token'] . "'")->fetch_assoc();
+        }
         if(!$user){
             $ms->close();
             throw new Exception('User not found!', 501);    
-        }
-
-        if(!isset($_COOKIE['token'])){
-            throw new Exception('Not authorized user!',401);
         }
         $userData = [
             'userId' => $user['idusers'],
@@ -49,6 +76,17 @@ class User_Model extends Model{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $ms->query("UPDATE users SET token = '' WHERE idusers = " . $userId);
         setcookie('token', '');
+        $ms->close();
+    }
+
+    function addFriend($userId, $friendId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $user = $ms->query("SELECT id_from FROM friends WHERE (id_from = " .$userId ." OR id_to = " .$userId . ") AND (id_from = " .$friendId ." OR id_to = " .$friendId . ")")->fetch_assoc();
+        if($user){
+            $ms->close();
+            throw new Exception('Already have request!');
+        }
+        $ms->query("INSERT INTO friends (status, id_to, id_from) VALUES ( 'request', ". $friendId  . ",". $userId .") ");
         $ms->close();
     }
 }

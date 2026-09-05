@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style/style.css">
     <title>TODO</title>
 </head>
-<body>
+<body >
     <header>
         <div class="todo_logo">
             <h1>TODO LIST</h1>
@@ -50,11 +50,16 @@
             <?php }?>
             <div class="settings_about_app">
                 <hr>
-                <a href="<?="user?action=openSettings&userId=". $data['user']['userId']?>" class="settings_logo">
+                <?php 
+                $urlPart = '';
+                if(isset($data['user']) ) {
+                    $urlPart = '&userId=' . $data['user']['userId'];
+                }?>
+                <a href="<?="user?action=openSettings". $urlPart?>" class="settings_logo">
                     <img src="images/settings.png" alt="404">
                     <span>Настройки</span>
                 </a>
-                <a href="<?="user?action=openAboutApp&userId=". $data['user']['userId']?>" class="about_app_logo">
+                <a href="<?="user?action=openAboutApp". $urlPart?>" class="about_app_logo">
                     <img src="images/info.png" alt="404">
                     <span>О приложении</span>
                 </a>

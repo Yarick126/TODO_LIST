@@ -3,7 +3,7 @@
 
         public static function route(){
             $uriParts = explode('/',$_SERVER['REQUEST_URI']);
-            $controller_name = 'welcome';
+            $controller_name = 'user';
             $action_name = 'default';
             if($uriParts[2]){
                 $controller_name = explode('?', $uriParts[2])[0];
@@ -18,6 +18,7 @@
             }
             else {
                 throw new Exception("Cant find controller path: " . $controller_path, 501);
+                
             }
             $model_file = ucfirst($controller_name) . '_model.php';
             $model_path = 'app/model/' . $model_file;
