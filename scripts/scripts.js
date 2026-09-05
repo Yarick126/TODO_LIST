@@ -1,3 +1,17 @@
+// Открытие формы, если пользователь нажал "Найти"
+if(location.href.substring(location.href.indexOf('on=')+3).includes('findFriend')){
+    const modalWindow = document.getElementById('modal_form');
+    modalWindow.showModal();
+}
+
+// Проверка темы
+const mode = localStorage.getItem('mode');
+if (mode === 'dark') {
+  document.body.classList.add('dark_mode');
+}
+
+
+// Проверка формы
 function validateForm(){
     const password = document.getElementsByName('password');
     const repeatPassword = document.getElementsByName('repeatPassword');
@@ -7,11 +21,12 @@ function validateForm(){
     }
     
 }
-
+// Изменения размера сайдбара 
 function wideSidebar(e){
     e.target.style.width = e.target.style.width == '300px'? '35px' : '300px';
 }
 
+// Переключение на ВХОД
 function openLogin(e) {
     const login = document.querySelector('.login');
     const regForm = document.querySelector('.register');
@@ -24,7 +39,7 @@ function openLogin(e) {
     }
     
 }
-
+// Переключение на регистрацию
 function openRegistration(e){
     const login = document.querySelector('.login');
     const regForm = document.querySelector('.register');
@@ -36,22 +51,18 @@ function openRegistration(e){
         e.target.className += 'active';
     }
 }
-
+// Закрытие формы поиска друзей
 function closeAddFriendsForm(e){
-    console.log(this);
-    
-
     const modalWindow = document.getElementById('modal_form');
     modalWindow.close();
-    
 }
-
+// Открытие формы поиска друзей
 function openAddFriendsForm(){
     const modalWindow = document.getElementById('modal_form');
     modalWindow.showModal();
 }
 
-
+// Установка темной темы
 function setDarkMode() {
     const body = document.body;
     if(body.classList.contains('dark_mode')){
@@ -61,27 +72,11 @@ function setDarkMode() {
 
     localStorage.setItem('mode','dark');
 }
-
+// Установка светлой темы
 function setLightMode(){
     const body = document.body;
     body.classList.remove('dark_mode');
     
     localStorage.setItem('mode','light')
 }
-const mode = localStorage.getItem('mode');
-if (mode === 'dark') {
-  document.body.classList.add('dark_mode');
-}
 
-function findUser(){
-    const container = document.querySelector('.friends_items_list');
-    const field = document.querySelector('.searchFriendInput');
-    console.log(field);
-    
-    for (let i = 0; i < container.children.length; i++) {
-        if(container.children[i].text.includes(field.value)){
-            console.log(container.children[i].text);
-        }
-    }
-    
-}
