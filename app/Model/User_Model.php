@@ -46,7 +46,7 @@ class User_Model extends Model{
         return $userData;
     }
 
-    function getUser( ){
+    function getUser(){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         if(isset($_GET['userId'])){
             $user = $ms->query("SELECT * FROM users WHERE idusers = " . $_GET['userId'])->fetch_assoc();

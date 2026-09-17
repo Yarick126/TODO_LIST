@@ -1,0 +1,9 @@
+.welcome_page {
+    padding: 15px;
+    width: -webkit-fill-available;
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

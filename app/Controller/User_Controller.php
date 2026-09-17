@@ -24,7 +24,9 @@ class User_Controller extends Controller {
         $this->view->generatePage('profile_template.php', ["user" => $userData]);
 
     }
-
+    public function notFound(){
+        $this->view->generatePage('not_found_template.php');
+    }
     public function logout(){
         if(isset($_GET['userId'])){
             try{
@@ -38,7 +40,8 @@ class User_Controller extends Controller {
 
     }
     public function openFriends(){
-        if(isset($_GET['userId'])){
+        
+        if(isset($_GET['userId']) && isset($_COOKIE['token'])){
             try{
                 $this->view->generatePage('friends_list_template.php', ['user' => $this->model->getUser()]);
             }
@@ -46,11 +49,14 @@ class User_Controller extends Controller {
                 redirect('auth?login=yes');
             }
         }
+        else {
+            redirect('auth?login=yes');
+        }
     }
 
     public function openSettings(){
         $userData = [];
-        if(isset($_GET['userId'])){
+        if(isset($_GET['userId']) && isset($_COOKIE['token'])){
            $userData = ['user' => $this->model->getUser()];
         }
 
@@ -104,6 +110,13 @@ class User_Controller extends Controller {
                 redirect('user?action=openFriends&userId=' . $_GET['userId']);
             }
         }
+        else {
+            redirect('auth?login=yes');
+        }
+        
+    }
+
+    public function upload(){
         
     }
 }

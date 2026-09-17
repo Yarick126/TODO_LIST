@@ -44,6 +44,13 @@ a:visited{
     color: white;
 }
 
+.disableLink {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
 input {
     background-color: #1B6392;
     color: white;
@@ -107,58 +114,30 @@ header .todo_logo {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    width: 35px;
+    width: 58px;
     background-color: #0f0f83;
     min-height: 89.3vh;
     transition: all 0.5s;
+    row-gap: 60px;
 }
 .sidebar:hover {
     cursor: pointer;
 }
 .sidebar>div{
     overflow: hidden;
+    padding: 8px;
+    transition: all 0.5s;
 }
 
-.sidebar .profile_logo a{
+.sidebar>div a{
     display: flex;
     flex-direction: row;
     align-items: center;
     column-gap: 15px;
 }
 
-.sidebar .friends {
-
-    margin-top: 100px;
+.sidebar>div:hover{
+    background-color: gray;
+    border-radius: 5px;
 }
 
-.sidebar .friends a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 15px;
-}
-
-.sidebar .logout {
-
-    margin-top: 100px;
-}
-
-.sidebar .logout a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 15px;
-}
-.sidebar .settings_about_app {
-    margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 15px;
-}
-
-.sidebar .settings_about_app > a {
-    display: flex;
-    flex-direction: row;
-    column-gap: 15px;
-    align-items: center;
-}

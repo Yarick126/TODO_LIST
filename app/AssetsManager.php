@@ -19,8 +19,8 @@ class AssetsManager {
     }
 
     public static function renderStyle(){
-        foreach(self::$jsSrc as $src){
-            echo "<link rel=\"stylesheet\" href=\"$src\">";
+        foreach(self::$styleSrc as $src){
+            echo "<link rel='stylesheet' href='$src'>";
         }
     }
 }

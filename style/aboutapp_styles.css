@@ -1,0 +1,30 @@
+
+.about{
+    width: -webkit-fill-available;
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.about h1{
+    margin-bottom: 20px;
+}
+
+.about hr{
+    height: 5px;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.about ul {
+    margin-top: 30px;
+    font-size: 20px;
+}

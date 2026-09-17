@@ -1,4 +1,5 @@
 <div class="auth">
+    <?php AssetsManager::addScripts('scripts/auth_scripts.js')?>
     <div class="choose_auth">
         <button class="active" onclick="openLogin(event)">ВОЙТИ</button>
         <button  onclick="openRegistration(event)">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
@@ -44,5 +45,6 @@
         <?php endif?>
         <input type="submit" value="Зарегестрироваться">
     </form>
+    <?php AssetsManager::renderScripts()?>
 </div>
         

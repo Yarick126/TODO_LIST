@@ -1,0 +1,33 @@
+
+.settings_page {
+    width: -webkit-fill-available;
+    width: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.settings_page h1 {
+    margin-bottom: 20px;
+
+}
+
+.settings_page hr {
+    height: 5px;
+    margin-bottom: 20px;
+}
+
+.settings_page .mode{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.settings_page .mode button:hover {
+    background-color: black;
+    color: white;
+}

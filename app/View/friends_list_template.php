@@ -1,4 +1,5 @@
 <div class="friend_list">
+    <?php AssetsManager::addScripts('scripts/friends_scripts.js')?>
     <button class="add_friend" onclick="openAddFriendsForm()"><img src="images/add.png" alt="404"> Добавить друга</button>
     <dialog id="modal_form" onclick="closeAddFriendsForm(event)">
         <form class="add_friend_form" action="<?="user?action=findFriend&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
@@ -14,19 +15,24 @@
                     <?php 
                     if(!empty($data['users'])){
                         foreach($data['users'] as $key => $friend){?>
-                        <?php $status = ''; 
-                            if(isset($friend['status'])){
-                                $status = $friend['status'];
-                            }
-                        ?>
-                        <a name="<?="friend_" . $key?>" href=<?="user?action=addFriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['userId']?>>
-                            <img class="friend_image" src="<?=$friend['image']?>" alt="404">
-                            <?=$friend['name'] . " " . $status?>
-                        </a>
+                            <?php 
+                            $status = '';
+                            $urlFriend = "user?action=addFriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['userId'];
+                                if(isset($friend['status'])){
+                                    $status = $friend['status'];
+                                    $urlFriend =  '';
+                                    $className = 'disableLink';
+                                }
+                            ?>
+                            <a class="<?=$className?>" name="<?="friend_" . $key?>" href=<?=$urlFriend?>>
+                                <img class="friend_image" src="<?=$friend['image']?>" alt="404">
+                                <?=$friend['name'] . " " . $status?>
+                            </a>
                     <?php }}?>
                 </div>
             </div>
             <input type="submit" value="Найти" >
         </form>
     </dialog>
+    <?php AssetsManager::renderScripts()?>
 </div>

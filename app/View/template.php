@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style/template_style.css">
-    <link rel="stylesheet" href="style/style.css">
+    <?php AssetsManager::renderStyle()?>
     <title>TODO</title>
 </head>
 <body >
@@ -41,6 +41,12 @@
                         <span>Друзья</span>
                     </a>
                 </div>
+                <div class="friend_request">
+                    <a href=<?= "user?action=openRequest&userId=" . $data['user']['userId']?>>
+                        <img src="images/bell.png" alt="404">
+                        <span>Уведомления</span>
+                    </a>
+                </div>
                 <div class="logout">
                     <a href=<?= "user?action=logout&userId=" . $data['user']['userId'] ?>>
                         <img src="images/logout.png" alt="404">
@@ -48,8 +54,8 @@
                     </a>
                 </div>
             <?php }?>
-            <div class="settings_about_app">
-                <hr>
+            <hr>
+            <div class="settings">
                 <?php 
                 $urlPart = '';
                 if(isset($data['user']) ) {
@@ -59,6 +65,8 @@
                     <img src="images/settings.png" alt="404">
                     <span>Настройки</span>
                 </a>
+            </div>
+            <div class="about_app">
                 <a href="<?="user?action=openAboutApp". $urlPart?>" class="about_app_logo">
                     <img src="images/info.png" alt="404">
                     <span>О приложении</span>
@@ -68,5 +76,6 @@
         <?php include 'app/view/' . $content?>
     </main>
     <script src="scripts/scripts.js"></script>
+    <?php AssetsManager::renderScripts()?>
 </body>
 </html>
