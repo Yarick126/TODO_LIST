@@ -1,6 +1,16 @@
 <div class="friend_list">
     <?php AssetsManager::addScripts('scripts/friends_scripts.js')?>
-    <button class="add_friend" onclick="openAddFriendsForm()"><img src="images/add.png" alt="404"> Добавить друга</button>
+    <button class="add_friend" onclick="openAddFriendsForm()">
+        <img src="images/add.png" alt="404"> 
+        Добавить друга
+    </button>
+    <?php if(count($data['friends'])){
+        foreach($data['friends'] as $friend){?>
+        <article class="friend_card">
+            <img src="<?=$friend['image']?>" alt="404" class="friend_image">
+            <span class="friend_name"><?=$friend['name']?></span>
+        </article>
+    <?php }}?>  
     <dialog id="modal_form" onclick="closeAddFriendsForm(event)">
         <form class="add_friend_form" action="<?="user?action=findFriend&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
             <div class="close">
@@ -34,5 +44,6 @@
             <input type="submit" value="Найти" >
         </form>
     </dialog>
+
     <?php AssetsManager::renderScripts()?>
 </div>

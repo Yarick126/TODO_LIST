@@ -89,4 +89,25 @@ class User_Model extends Model{
         $ms->query("INSERT INTO friends (status, id_to, id_from) VALUES ( 'request', ". $friendId  . ",". $userId .") ");
         $ms->close();
     }
+
+    function getRequests($userId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $requests = $ms->query("SELECT friends.id_from, users.name, users.image  FROM friends JOIN users ON friends.id_from = users.idusers  WHERE friends.id_to = " .$userId ." AND friends.status = 'request'")->fetch_all();
+
+        $ms->close();
+        
+        $users = [];
+        foreach($requests as $key => $item){
+            $users[$key]['name'] = $item[1];
+            $users[$key]['id'] = $item[0];
+            $users[$key]['image'] = $item[2] == '' ? 'images/account.png' : $item[2];
+        }
+        return $users;
+    }
+    function changeStatus($status){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $ms->query("UPDATE friends SET status = REPLACE (status , 'request', '". $status . "') WHERE id_to = " .$_GET['userId'] . " AND id_from = " .$_GET['friendId'] );
+        
+        $ms->close();
+    }
 }

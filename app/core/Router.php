@@ -9,11 +9,11 @@
 
             if($uriParts[2]){
                 $controller_name = explode('?', $uriParts[2])[0];
-                $styles = 'style/' . $controller_name . '_styles.css';
+                $styles = 'style/' . $controller_name . '_styles.css'; // обозначение стилей
             }
             if(isset($_GET['action'])){
                 $action_name = $_GET['action'];
-                $styles = 'style/' . strtolower(substr($action_name , strpos($action_name,'open')+4)) . '_styles.css';
+                $styles = 'style/' . strtolower(substr($action_name , strpos($action_name,'open')+4)) . '_styles.css'; // обозначение стилей
             }
             $controller_file = $controller_name . '_controller.php';
             $controller_path = 'app/controller/' . $controller_file;
@@ -29,7 +29,7 @@
             if(file_exists($model_path)){
                 require_once $model_path;
             }            
-            AssetsManager::addStyles($styles);
+            AssetsManager::addStyles($styles); // добавление стилей в глобальную переменную
             $controller_class = ucfirst($controller_name) . '_Controller';
             $controller_obj = new $controller_class;
             if(method_exists($controller_obj, $action_name)){

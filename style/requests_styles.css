@@ -1,0 +1,30 @@
+.requests{
+    padding-top: 100px;
+    padding-left: 100px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.user_data{
+
+    height: fit-content;
+    width: fit-content;
+    padding: 5px;
+    border: solid 1px #0f0f83;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.user_data a{
+    background-color: #0f0f83;
+    padding: 5px;
+    border: solid 1px #0f0f83;
+}
+
+.user_data a:hover{
+    background-color: white;
+    color: #0f0f83;
+    padding: 5px;
+}

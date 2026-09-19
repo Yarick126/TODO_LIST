@@ -43,6 +43,7 @@ class User_Controller extends Controller {
         
         if(isset($_GET['userId']) && isset($_COOKIE['token'])){
             try{
+                
                 $this->view->generatePage('friends_list_template.php', ['user' => $this->model->getUser()]);
             }
             catch(Exception $er){
@@ -116,7 +117,45 @@ class User_Controller extends Controller {
         
     }
 
+    public function openRequests(){
+        try{
+            $userData = [];
+            if(isset($_GET['userId'])){
+                $userData = $this->model->getUser();
+                $users = $this->model->getRequests($_GET['userId']);
+            }
+            $this->view->generatePage('requests_template.php', ['user' => $userData, 'users' => $users]);
+        }
+        catch(Exception $er){
+            $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
+        }
+    }
+
     public function upload(){
         
+    }
+
+    public function acceptRequest(){
+        try{
+            $userData = [];
+            if(isset($_GET['userId'])){
+                $this->model->changeStatus('accepted');
+            }
+            redirect('users?action=openRequests&userId=' . $_GET['userId']);
+        }
+        catch(Exception $er){
+            $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
+        }
+    }
+    public function rejectRequest(){
+        try{
+            if(isset($_GET['userId'])){
+                $this->model->changeStatus('rejected');
+            }
+            redirect('users?action=openRequests&userId=' . $_GET['userId']);
+        }
+        catch(Exception $er){
+            $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
+        }
     }
 }

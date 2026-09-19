@@ -42,7 +42,7 @@
                     </a>
                 </div>
                 <div class="friend_request">
-                    <a href=<?= "user?action=openRequest&userId=" . $data['user']['userId']?>>
+                    <a href=<?= "user?action=openRequests&userId=" . $data['user']['userId']?>>
                         <img src="images/bell.png" alt="404">
                         <span>Уведомления</span>
                     </a>
