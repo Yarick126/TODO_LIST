@@ -4,13 +4,21 @@
         <img src="images/add.png" alt="404"> 
         Добавить друга
     </button>
-    <?php if(count($data['friends'])){
+    <?php if(count($data['friends']) != 0){
         foreach($data['friends'] as $friend){?>
         <article class="friend_card">
             <img src="<?=$friend['image']?>" alt="404" class="friend_image">
             <span class="friend_name"><?=$friend['name']?></span>
+            <a class="unfriend_button" href=<?="user?action=unfriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['id']?>>
+                <img class="unfriend_img" src="images/x.png" alt="404">
+            </a>
         </article>
-    <?php }}?>  
+    <?php }}
+        if(isset($data['error'])){?>
+        <div class="error_msg">
+            <?=$data['error']?>
+        </div>
+    <?php }?>  
     <dialog id="modal_form" onclick="closeAddFriendsForm(event)">
         <form class="add_friend_form" action="<?="user?action=findFriend&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
             <div class="close">

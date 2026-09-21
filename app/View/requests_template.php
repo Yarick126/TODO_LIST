@@ -6,7 +6,7 @@
             <img class="user_image" src="<?=$user['image']?>" alt="404">
             <span class="user_name"><?=$user['name']?></span>
             <a href="<?="user?action=acceptRequest&userId=" . $data['user']['userId'] . "&friendId=" . $user['id']?>">Добавить</a>
-            <a href="<?="user?action=rejectRequest&userId=" . $data['user']['userId'] . "&friendId=" . $user['id']?>">Отклонить</a>
+            <a href="<?="user?action=rejectRequest&userId=" . $data['user']['userId'] . "&friendId=" . $user['id']?>">Отклонить</a> 
         </article>
     <?php }} else {?>
         <div class="error_msg">

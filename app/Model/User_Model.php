@@ -110,4 +110,28 @@ class User_Model extends Model{
         
         $ms->close();
     }
+
+    function getFriends($userId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $data = $ms->query("SELECT users.name, users.image, users.idusers FROM users JOIN friends ON friends.id_from = users.idusers WHERE friends.id_to = " . $userId . " AND friends.status = 'accepted' 
+        UNION 
+        SELECT users.name, users.image, users.idusers FROM users JOIN friends ON friends.id_to = users.idusers WHERE friends.id_from = " . $userId . " AND friends.status = 'accepted'")->fetch_all();
+        
+        $ms->close();
+        $friends = [];
+
+        foreach($data as $key => $item){
+            $friends[$key]['name'] = $item[0];
+            $friends[$key]['image'] = $item[1] == '' ? 'images/account.png' : $item[1]; 
+            $friends[$key]['id'] = $item[2];        
+        }
+
+        return $friends;
+    }
+
+    function deleteFromFriends($friendId, $userId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+        $ms->query("DELETE FROM friends  WHERE (id_to = " . $userId ." AND id_from = " . $friendId . " ) OR (id_to = " . $friendId . " AND  id_from = " . $userId . ")");
+        $ms->close();
+    }
 }

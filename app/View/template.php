@@ -34,7 +34,10 @@
                     </a>
                 <?php }?>
             </div>
-            <?php if(isset($_COOKIE['token'])){?>
+            <?php if(isset($_COOKIE['token'])){
+                // TODO: Добавить ссылку на таски 
+                ?>
+                
                 <div class="friends">
                     <a href=<?= "user?action=openFriends&userId=" . $data['user']['userId']?>>
                         <img src="images/friends.png" alt="404">

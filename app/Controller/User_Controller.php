@@ -43,11 +43,19 @@ class User_Controller extends Controller {
         
         if(isset($_GET['userId']) && isset($_COOKIE['token'])){
             try{
-                
-                $this->view->generatePage('friends_list_template.php', ['user' => $this->model->getUser()]);
+                $this->view->generatePage('friends_list_template.php', 
+                [
+                    'user' =>  $this->model->getUser(), 
+                    'friends' => $this->model->getFriends($_GET['userId'])
+                ]);
             }
             catch(Exception $er){
-                redirect('auth?login=yes');
+                $this->view->generatePage('friends_list_template.php', 
+                [
+                    'user' =>  $this->model->getUser(), 
+                    'friends' => [] , 
+                    'error' => $er->getMessage()
+                ]);
             }
         }
         else {
@@ -132,12 +140,11 @@ class User_Controller extends Controller {
     }
 
     public function upload(){
-        
+        // TODO: Доделать добавление путь картинки в БД
     }
 
     public function acceptRequest(){
         try{
-            $userData = [];
             if(isset($_GET['userId'])){
                 $this->model->changeStatus('accepted');
             }
@@ -157,5 +164,16 @@ class User_Controller extends Controller {
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
         }
+    }
+
+    public function unfriend(){
+        // TODO: Доделать удаление друзей
+        try {
+            $this->model->deleteFromFriends($_GET['friendId'], $_GET['userId']);
+            redirect('users?action=openFriends&userId=' . $_GET['userId']);
+        } catch (Exception $er) {
+            $this->view->generatePage('friends_list_template.php', ['user'=> $this->model->getUser(), 'error' => $er->getMessage()]);
+        }
+
     }
 }

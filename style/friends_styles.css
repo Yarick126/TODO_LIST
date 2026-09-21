@@ -3,32 +3,29 @@
     position: relative;
     width: -webkit-fill-available;
     width: stretch;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     padding-top: 100px;
     padding-left: 100px;
     padding-right: 100px;
 }
 
-.friend_list .add_friend {
+.add_friend {
     width: 200px;
+    height: 67px;
     display: flex;
     flex-direction: row;
     align-items: center;
     column-gap: 10px;
 }
 
-.friend_list .add_friend:hover {
+.add_friend:hover {
     background-color: #0f0f83;
 }
 .friend_list #modal_form {
     margin: auto;
 }
 
-.friend_list #modal_form::backdrop {
-
-}
 .friend_list form {
     width: 500px;
     display: flex;
@@ -108,4 +105,29 @@
     height: 400px;
     overflow-y: scroll;
     margin-bottom: 20px;
+}
+
+.friend_card {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 15px;
+    border: #0f0f83 1px solid;
+    border-radius: 5px;
+    padding: 15px;
+    width: 200px;
+    height: 65px;
+    font-family: inherit;
+}
+
+/* TODO: Доделать стили для карточки друга */
+
+.unfriend_button {
+
+}
+
+.unfriend_img{
+    width: 20px;
+    height: 20px;
 }
