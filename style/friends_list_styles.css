@@ -100,7 +100,9 @@
     background-color: white;
     color: #0f0f83;
 }
-
+.user_status{
+    color: green;
+}
 .friend_list form .friends_items{
     height: 400px;
     overflow-y: scroll;

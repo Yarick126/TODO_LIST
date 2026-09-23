@@ -4,8 +4,10 @@
             <img src="<?=$data['user']['image']?>" alt="not found">
         <?php else:?>
             <img src="images/account.png" alt="not found">
-        <?php endif?>
-        // TODO: Доделать добавление картинки
+        <?php 
+                // TODO: Доделать добавление картинки 
+        endif?>
+
         <form class="file_upload_form" action="<?="user?action=upload&userId=" . $data['user']['userId']?>" method="POST" enctype="multipart/form-data">
             <label for="profile_image">
                 <span>Выберите изображение для своего профиля: </span>

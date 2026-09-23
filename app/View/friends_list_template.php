@@ -20,7 +20,7 @@
         </div>
     <?php }?>  
     <dialog id="modal_form" onclick="closeAddFriendsForm(event)">
-        <form class="add_friend_form" action="<?="user?action=findFriend&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
+        <form class="add_friend_form" action="<?="user?action=openFriends&userId=" . $data['user']['userId']?>" onclick="event.stopPropagation()" method="POST">
             <div class="close">
                 <button type="button" onclick="closeAddFriendsForm(event)"><img src="images/close.png" alt="404" ></button>
             </div>
@@ -35,6 +35,7 @@
                         foreach($data['users'] as $key => $friend){?>
                             <?php 
                             $status = '';
+                            $className = '';
                             $urlFriend = "user?action=addFriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['userId'];
                                 if(isset($friend['status'])){
                                     $status = $friend['status'];
@@ -44,7 +45,8 @@
                             ?>
                             <a class="<?=$className?>" name="<?="friend_" . $key?>" href=<?=$urlFriend?>>
                                 <img class="friend_image" src="<?=$friend['image']?>" alt="404">
-                                <?=$friend['name'] . " " . $status?>
+                                <?=$friend['name'] . " "?>
+                                <span class="user_status"><?=$status?></span>
                             </a>
                     <?php }}?>
                 </div>
