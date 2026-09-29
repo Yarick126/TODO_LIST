@@ -53,14 +53,26 @@
     background-color: #0f0f83;
 }
 
-.profile .profile_photo>img {
+.photo>img {
     width: 100px;
     height: 100px;
-    margin-bottom: 100px;
+    object-fit: cover;
 }
 
 .profile .description {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
+}
+.photo{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 100px;
+}
+.delete_image_link{
+    position: absolute;
+    color: black;
+    top: -7px;
+    right: 2px;
 }

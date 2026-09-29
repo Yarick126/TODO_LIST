@@ -127,7 +127,8 @@ class User_Controller extends Controller {
     }
 
     public function upload(){
-        // TODO: Доделать добавление путь картинки в БД
+        $this->model->addPicture();
+        redirect('user?userId=' . $_GET['userId']);
     }
 
     public function acceptRequest(){
@@ -154,7 +155,6 @@ class User_Controller extends Controller {
     }
 
     public function unfriend(){
-        // TODO: Доделать удаление друзей
         try {
             $this->model->deleteFromFriends($_GET['friendId'], $_GET['userId']);
             redirect('users?action=openFriends&userId=' . $_GET['userId']);
@@ -162,5 +162,10 @@ class User_Controller extends Controller {
             $this->view->generatePage('friends_list_template.php', ['user'=> $this->model->getUser(), 'error' => $er->getMessage()]);
         }
 
+    }
+
+    public function deleteImage(){
+        $this->model->deletePicture($_GET['userId']);
+        redirect("user?userId=" . $_GET["userId"]);
     }
 }

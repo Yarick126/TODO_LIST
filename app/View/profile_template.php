@@ -1,12 +1,11 @@
 <div class="profile">
     <div class="profile_photo">
         <?php if(isset($data['user']['image'])):?>
-            <img src="<?=$data['user']['image']?>" alt="not found">
-        <?php else:?>
-            <img src="images/account.png" alt="not found">
-        <?php 
-                // TODO: Доделать добавление картинки 
-        endif?>
+            <div class="photo">
+                <img src="<?=$data['user']['image']?>" alt="not found">
+                <a class="delete_image_link" href="<?="user?action=deleteImage&userId=" . $data['user']['userId']?>">x</a>
+            </div>
+        <?php endif?>
 
         <form class="file_upload_form" action="<?="user?action=upload&userId=" . $data['user']['userId']?>" method="POST" enctype="multipart/form-data">
             <label for="profile_image">

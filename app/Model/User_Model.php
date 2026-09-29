@@ -104,6 +104,7 @@ class User_Model extends Model{
         }
         return $users;
     }
+
     function changeStatus($status){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $ms->query("UPDATE friends SET status = REPLACE (status , 'request', '". $status . "') WHERE id_to = " .$_GET['userId'] . " AND id_from = " .$_GET['friendId'] );
@@ -133,5 +134,23 @@ class User_Model extends Model{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $ms->query("DELETE FROM friends  WHERE (id_to = " . $userId ." AND id_from = " . $friendId . " ) OR (id_to = " . $friendId . " AND  id_from = " . $userId . ")");
         $ms->close();
+    }
+
+    function addPicture(){
+        $uploads_dir = 'profile_pictures';
+        if($_FILES && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK){
+            $name = basename($_FILES['profile_image']['name']);
+            move_uploaded_file($_FILES['profile_image']['tmp_name'], "$uploads_dir/$name");
+
+            $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+            $ms->query("UPDATE users SET image = 'profile_pictures/" . $_FILES['profile_image']['name'] . "' WHERE idusers = " . $_GET['userId']);
+            $ms->close();
+        }
+    }
+
+    function deletePicture($userId){
+        $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
+            $ms->query("UPDATE users SET image = '' WHERE idusers = " . $userId);
+            $ms->close();
     }
 }

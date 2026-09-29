@@ -141,3 +141,6 @@ header .todo_logo {
     border-radius: 5px;
 }
 
+.profile_link>img{
+    object-fit: cover;
+}
