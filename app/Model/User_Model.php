@@ -141,7 +141,6 @@ class User_Model extends Model{
         if($_FILES && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK){
             $name = basename($_FILES['profile_image']['name']);
             move_uploaded_file($_FILES['profile_image']['tmp_name'], "$uploads_dir/$name");
-
             $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
             $ms->query("UPDATE users SET image = 'profile_pictures/" . $_FILES['profile_image']['name'] . "' WHERE idusers = " . $_GET['userId']);
             $ms->close();
