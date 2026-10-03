@@ -4,7 +4,7 @@
         <button class="active" onclick="openLogin(event)">ВОЙТИ</button>
         <button  onclick="openRegistration(event)">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
     </div>
-    <form action="auth?action=login" method="POST" class="login">
+    <form action="auth/login" method="POST" class="login">
         <div class="field">
             <label for="">Почта</label>
             <input name='email' required type="email">
@@ -20,7 +20,7 @@
         <?php endif?>
         <input type="submit" value="Войти">
     </form>
-    <form onsubmit="validateForm()" action="auth?action=register" method="POST" class="register">
+    <form onsubmit="validateForm()" action="auth/register" method="POST" class="register">
         <div class="field">
             <label for="1">Имя</label>
             <input required type="name" name="name" id="1">

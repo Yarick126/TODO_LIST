@@ -1,3 +1,4 @@
+php_value session.save_path "C:\xampp\htdocs"
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

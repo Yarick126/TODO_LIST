@@ -46,40 +46,42 @@ class User_Model extends Model{
         return $userData;
     }
 
-    function getUser(){
+    function getUser():void{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         if(isset($_GET['userId'])){
-            $user = $ms->query("SELECT * FROM users WHERE idusers = " . $_GET['userId'])->fetch_assoc();
+            $user = $ms->query("SELECT COUNT(*) FROM users WHERE idusers = " . $_GET['userId'])->fetch_assoc();
         }
-        if(isset($_COOKIE['token']) != 0 && !isset($user)){
-            $user = $ms->query("SELECT * FROM users WHERE token = '" . $_COOKIE['token'] . "'")->fetch_assoc();
+        if(isset($_SESSION['token']) != 0 && !isset($user)){
+            $user = $ms->query("SELECT * FROM users WHERE token = '" . $_SESSION['token'] . "'")->fetch_assoc();
         }
         if(!$user){
             $ms->close();
             throw new Exception('User not found!', 501);    
         }
-        $userData = [
-            'userId' => $user['idusers'],
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'image' => $user['image'],
-            'token' => $_COOKIE['token']
-        ];
-        if(!$userData['image']){
-            $userData['image'] = "images/account.png";
-        }
         $ms->close();
-        return $userData;
     }
 
-    function logout($userId){
+    function logout(){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $ms->query("UPDATE users SET token = '' WHERE idusers = " . $userId);
-        setcookie('token', '');
+        $ms->query("UPDATE users SET token = '' WHERE idusers = '" . $_SESSION['userId'] . "'");
+        $_SESSION = [];
+        if(ini_get('session.use_coockies')){
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+        session_destroy();
         $ms->close();
     }
 
-    function addFriend($userId, $friendId){
+    function addFriend(int $userId, int $friendId):void{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $user = $ms->query("SELECT id_from FROM friends WHERE (id_from = " .$userId ." OR id_to = " .$userId . ") AND (id_from = " .$friendId ." OR id_to = " .$friendId . ")")->fetch_assoc();
         if($user){
@@ -90,7 +92,7 @@ class User_Model extends Model{
         $ms->close();
     }
 
-    function getRequests($userId){
+    function getRequests(int $userId):array{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $requests = $ms->query("SELECT friends.id_from, users.name, users.image  FROM friends JOIN users ON friends.id_from = users.idusers  WHERE friends.id_to = " .$userId ." AND friends.status = 'request'")->fetch_all();
 
@@ -105,14 +107,14 @@ class User_Model extends Model{
         return $users;
     }
 
-    function changeStatus($status){
+    function changeStatus(string $status):void{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        $ms->query("UPDATE friends SET status = REPLACE (status , 'request', '". $status . "') WHERE id_to = " .$_GET['userId'] . " AND id_from = " .$_GET['friendId'] );
+        $ms->query("UPDATE friends SET status = REPLACE (status , 'request', '". $status . "') WHERE id_to = " .$_SESSION['userId'] . " AND id_from = " .$_GET['friendId'] );
         
         $ms->close();
     }
 
-    function getFriends($userId){
+    function getFriends(int $userId):array{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $data = $ms->query("SELECT users.name, users.image, users.idusers FROM users JOIN friends ON friends.id_from = users.idusers WHERE friends.id_to = " . $userId . " AND friends.status = 'accepted' 
         UNION 
@@ -130,13 +132,13 @@ class User_Model extends Model{
         return $friends;
     }
 
-    function deleteFromFriends($friendId, $userId){
+    function deleteFromFriends(int $friendId):void{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $ms->query("DELETE FROM friends  WHERE (id_to = " . $userId ." AND id_from = " . $friendId . " ) OR (id_to = " . $friendId . " AND  id_from = " . $userId . ")");
         $ms->close();
     }
 
-    function addPicture(){
+    function addPicture():void{
         $uploads_dir = 'profile_pictures';
         if($_FILES && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK){
             $name = basename($_FILES['profile_image']['name']);
@@ -147,7 +149,7 @@ class User_Model extends Model{
         }
     }
 
-    function deletePicture($userId){
+    function deletePicture(int $userId):void{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
             $ms->query("UPDATE users SET image = '' WHERE idusers = " . $userId);
             $ms->close();

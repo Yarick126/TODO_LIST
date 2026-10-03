@@ -7,34 +7,34 @@ class Auth_Controller extends Controller{
         $this->view = new View();
     }
 
-    public function default(){
+    public function default():void{
         $this->view->generatePage('login_template.php');        
     }
 
 
-    public function login(){
+    public function login():void{
         if(isset($_POST['email']) && isset($_POST['password'])){
             try{
-                $userData = $this->model->checkUser([
+                $id = $this->model->getUser([
                     'email' => $_POST['email'], 
                     'password' =>$_POST['password']]);
-                redirect("user?userId=" . $userData['userId']);
+                redirect("http://localhost:8080/todo-list/user?userId=" . $id);
             }
             catch(Exception $er) {
                 $this->view->generatePage('login_template.php',[ 'errorMessage' => $er->getMessage()]);
             }
         }
     }
-    public function register(){
+    public function register():void{
 
-        if(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['name'])){
+        if(!empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['name'])){
             try{
-                $userData = $this->model->addUser([ 
+                $id = $this->model->addUser([ 
                     'email' => $_POST['email'],
                     'name' => $_POST['name'],
                     'password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
                 ]);
-                redirect("user?userId=" . $userData['userId']);
+                redirect("user?userId=" . $id);
             }
             catch(Exception $er){
                 $this->view->generatePage('login_template.php',[ 'errorMessage' => $er->getMessage()]);

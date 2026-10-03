@@ -7,9 +7,9 @@ class User_Controller extends Controller {
         $this->model = new User_Model();
         $this->view = new View();
     }
-    public function default(){
+    public function default():void{
         $userData = [];
-        if(isset($_GET['userId']) || isset($_COOKIE['token'])){
+        if(isset($_GET['userId']) || isset($_SESSION['token'])){
             try{
                 $userData = $this->model->getUser();
             }
@@ -24,46 +24,37 @@ class User_Controller extends Controller {
         $this->view->generatePage('profile_template.php', ["user" => $userData]);
 
     }
-    public function notFound(){
+    public function notFound():void{
         $this->view->generatePage('not_found_template.php');
     }
     public function logout(){
-        if(isset($_GET['userId'])){
-            try{
-                $this->model->logout($_GET['userId']);
-            }
-            catch(Exception $er){
-                echo $er->getMessage();
-            }
-            redirect('auth?login=yes');
+        try{
+            $this->model->logout();
         }
+        catch(Exception $er){
+            echo $er->getMessage();
+        }
+        redirect('auth?login=yes');
 
     }
-    public function openFriends(){
-        if(isset($_GET['userId']) && isset($_COOKIE['token'])){
+    public function friends():void{
+        if($_SESSION){
             $errorMsg = '';
-            $user = [];
             $friends = [];
             $users = [];
             try{
-                $user = $this->model->getUser();
+                $this->model->getUser();
                 $friends = $this->model->getFriends($_GET['userId']);
-
+                if(isset($_POST['friend_name'])){             // Проверка, если ищет пользователя
+                    $users = $this->model->getAllUsers();
+                }
             }
             catch(Exception $er){
                 $errorMsg = $er->getMessage();
             }
-            if(isset($_POST['friend_name'])){ // Проверка, если ищет пользователя
-                try{
-                    $users = $this->model->getAllUsers();
-                }
-                catch(Exception $er){
-                    $errorMsg += ' ' . $er->getMessage();
-                }
-            }
+
             $this->view->generatePage('friends_list_template.php', 
                 [
-                    'user' =>  $user, 
                     'friends' => $friends , 
                     'error' => $errorMsg,
                     'users' => $users
@@ -75,51 +66,29 @@ class User_Controller extends Controller {
         }
     }
 
-    public function openSettings(){
-        $userData = [];
-        if(isset($_GET['userId']) && isset($_COOKIE['token'])){
-           $userData = ['user' => $this->model->getUser()];
-        }
+    public function settings():void{
+        $this->view->generatePage('settings_template.php');
 
-        try{
-            $this->view->generatePage('settings_template.php', $userData);
-        }
-        catch(Exception $er){
-            redirect('auth?login=yes');
-        }
     }
 
-    public function openAboutApp(){
-        $userData = [];
-        if(isset($_GET['userId'])){
-           $userData = ['user' => $this->model->getUser()];
-        }
-        try{
-            $this->view->generatePage('about_template.php', $userData);
-        }
-        catch(Exception $er){
-            redirect('auth?login=yes');
-        }
+    public function about_app():void{
+        $this->view->generatePage('about_template.php');
     }
 
-    public function addFriend(){
+    public function addFriend():void{
         try{
             $this->model->addFriend($_GET['userId'],$_GET['friendId']);
-            redirect("user?action=openFriends&userId=" . $_GET['userId']);
+            redirect("user/friends");
         }
         catch(Exception $er){
             echo($er->getMessage());
         }
     }
 
-    public function openRequests(){
+    public function requests():void{
         try{
-            $userData = [];
-            if(isset($_GET['userId'])){
-                $userData = $this->model->getUser();
-                $users = $this->model->getRequests($_GET['userId']);
-            }
-            $this->view->generatePage('requests_template.php', ['user' => $userData, 'users' => $users]);
+            $users = $this->model->getRequests($_SESSION['userId']);
+            $this->view->generatePage('requests_template.php', ['users' => $users]);
         }
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
@@ -133,10 +102,8 @@ class User_Controller extends Controller {
 
     public function acceptRequest(){
         try{
-            if(isset($_GET['userId'])){
-                $this->model->changeStatus('accepted');
-            }
-            redirect('users?action=openRequests&userId=' . $_GET['userId']);
+            $this->model->changeStatus('accepted');
+            redirect('users/requests');
         }
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
@@ -144,22 +111,20 @@ class User_Controller extends Controller {
     }
     public function rejectRequest(){
         try{
-            if(isset($_GET['userId'])){
-                $this->model->changeStatus('rejected');
-            }
-            redirect('users?action=openRequests&userId=' . $_GET['userId']);
+            $this->model->changeStatus('rejected');
+            redirect('users/requests');
         }
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
         }
     }
 
-    public function unfriend(){
+    public function unfriend():void{
         try {
-            $this->model->deleteFromFriends($_GET['friendId'], $_GET['userId']);
-            redirect('users?action=openFriends&userId=' . $_GET['userId']);
+            $this->model->deleteFromFriends($_GET['friendId']);
+            redirect('users/friends&userId=' . $_GET['userId']);
         } catch (Exception $er) {
-            $this->view->generatePage('friends_list_template.php', ['user'=> $this->model->getUser(), 'error' => $er->getMessage()]);
+            $this->view->generatePage('friends_list_template.php', ['error' => $er->getMessage()]);
         }
 
     }

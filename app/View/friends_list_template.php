@@ -9,7 +9,7 @@
         <article class="friend_card">
             <img src="<?=$friend['image']?>" alt="404" class="friend_image">
             <span class="friend_name"><?=$friend['name']?></span>
-            <a class="unfriend_button" href=<?="user?action=unfriend&userId=" . $data['user']['userId'] . "&friendId=" . $friend['id']?>>
+            <a class="unfriend_button" href=<?="user/friends/unfriend&friendId=" . $friend['id']?>>
                 <img class="unfriend_img" src="images/x.png" alt="404">
             </a>
         </article>

@@ -22,60 +22,53 @@
     <main>
         <div class="sidebar" onclick="wideSidebar(event)">
             <div class="profile_logo">
-                <?php if(!isset($_COOKIE['token'])){?>
+                <?php if(!isset($_SESSION)){?>
                     <a href="auth">
                         <img src="images/account.png" alt="404">
                         <span>Войти</span>
                     </a>
                 <?php } else {?>
-                    <a href=<?="user?userId=" . $data['user']['userId']?> class="profile_link">
-                        <img src=<?=$data['user']['image']?> alt="404">
-                        <span><?=$data['user']['name']?></span>
+                    <a href=<?="user"?> class="profile_link">
+                        <img src=<?=$_SESSION['image']?> alt="404">
+                        <span><?=$_SESSION['name']?></span>
                     </a>
                 <?php }?>
             </div>
-            <?php if(isset($_COOKIE['token'])){
-                // TODO: Добавить ссылку на таски 
-                ?>
+            <?php if(!empty($_SESSION)){?>
                 <div class="link_to_tasks">
-                    <a href=<?= "tasks?userId=" . $data['user']['userId']?>>
+                    <a href=<?="user/tasks"?>>
                         <img src="images/task.png" alt="404">
                         <span>Задачи</span>
                     </a>
                 </div>
-                <div class="friends">
-                    <a href=<?= "user?action=openFriends&userId=" . $data['user']['userId']?>>
+                <div class="link_to_friends">
+                    <a href=<?= "user/friends"?>>
                         <img src="images/friends.png" alt="404">
                         <span>Друзья</span>
                     </a>
                 </div>
-                <div class="friend_request">
-                    <a href=<?= "user?action=openRequests&userId=" . $data['user']['userId']?>>
+                <div class="link_to_request">
+                    <a href=<?= "user/requests"?>>
                         <img src="images/bell.png" alt="404">
                         <span>Уведомления</span>
                     </a>
                 </div>
-                <div class="logout">
-                    <a href=<?= "user?action=logout&userId=" . $data['user']['userId'] ?>>
+                <div class="link_to_logout">
+                    <a href=<?= "user/logout"?>>
                         <img src="images/logout.png" alt="404">
                         <span>Выйти</span>
                     </a>
                 </div>
             <?php }?>
             <hr>
-            <div class="settings">
-                <?php 
-                $urlPart = '';
-                if(isset($data['user']) ) {
-                    $urlPart = '&userId=' . $data['user']['userId'];
-                }?>
-                <a href="<?="user?action=openSettings". $urlPart?>" class="settings_logo">
+            <div class="link_to_settings">
+                <a href="<?="settings/"?>" class="settings_logo">
                     <img src="images/settings.png" alt="404">
                     <span>Настройки</span>
                 </a>
             </div>
-            <div class="about_app">
-                <a href="<?="user?action=openAboutApp". $urlPart?>" class="about_app_logo">
+            <div class="link_to_about_app">
+                <a href="<?="about_app/"?>" class="about_app_logo">
                     <img src="images/info.png" alt="404">
                     <span>О приложении</span>
                 </a>

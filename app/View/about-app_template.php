@@ -1,4 +1,4 @@
-<div class="about">
+<div class="about-app">
     <h1>О ПРИЛОЖЕНИИ</h1>
     <hr color="#0f0f83">
     <p>
