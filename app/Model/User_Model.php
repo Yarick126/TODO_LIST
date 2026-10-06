@@ -46,12 +46,9 @@ class User_Model extends Model{
         return $userData;
     }
 
-    function getUser():void{
+    function getUser():array{
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-        if(isset($_GET['userId'])){
-            $user = $ms->query("SELECT COUNT(*) FROM users WHERE idusers = " . $_GET['userId'])->fetch_assoc();
-        }
-        if(isset($_SESSION['token']) != 0 && !isset($user)){
+        if(isset($_SESSION['token']) ){
             $user = $ms->query("SELECT * FROM users WHERE token = '" . $_SESSION['token'] . "'")->fetch_assoc();
         }
         if(!$user){
@@ -59,11 +56,14 @@ class User_Model extends Model{
             throw new Exception('User not found!', 501);    
         }
         $ms->close();
+
+        return $user;
     }
 
     function logout(){
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
         $ms->query("UPDATE users SET token = '' WHERE idusers = '" . $_SESSION['userId'] . "'");
+        $ms->close();
         $_SESSION = [];
         if(ini_get('session.use_coockies')){
             $params = session_get_cookie_params();
@@ -78,7 +78,7 @@ class User_Model extends Model{
             );
         }
         session_destroy();
-        $ms->close();
+
     }
 
     function addFriend(int $userId, int $friendId):void{
@@ -144,14 +144,16 @@ class User_Model extends Model{
             $name = basename($_FILES['profile_image']['name']);
             move_uploaded_file($_FILES['profile_image']['tmp_name'], "$uploads_dir/$name");
             $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-            $ms->query("UPDATE users SET image = 'profile_pictures/" . $_FILES['profile_image']['name'] . "' WHERE idusers = " . $_GET['userId']);
+            $ms->query("UPDATE users SET image = 'profile_pictures/" . $_FILES['profile_image']['name'] . "' WHERE idusers = " . $_SESSION['userId']);
             $ms->close();
+            $_SESSION['image'] = 'profile_pictures/' . $_FILES['profile_image']['name'];
         }
     }
 
     function deletePicture(int $userId):void{
+        $_SESSION['image'] = 'images/account.png';
         $ms = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_SCHEMA,DB_PORT);
-            $ms->query("UPDATE users SET image = '' WHERE idusers = " . $userId);
-            $ms->close();
+        $ms->query("UPDATE users SET image = '' WHERE idusers = " . $userId);
+        $ms->close();
     }
 }

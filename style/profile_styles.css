@@ -57,6 +57,7 @@
     width: 100px;
     height: 100px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile .description {
@@ -75,4 +76,9 @@
     color: black;
     top: -7px;
     right: 2px;
+}
+
+.delete_image_link img {
+    width: 20px;
+    height: 20px;
 }

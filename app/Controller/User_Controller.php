@@ -8,20 +8,20 @@ class User_Controller extends Controller {
         $this->view = new View();
     }
     public function default():void{
-        $userData = [];
-        if(isset($_GET['userId']) || isset($_SESSION['token'])){
+        if(!empty($_SESSION)){
             try{
-                $userData = $this->model->getUser();
+                $user = $this->model->getUser();
             }
             catch(Exception $er){
                 redirect('auth');
             }
+            $this->view->generatePage('profile_template.php', ["user" => $user]);
         }
         else {
             $this->view->generatePage('welcome_template.php');
         }
 
-        $this->view->generatePage('profile_template.php', ["user" => $userData]);
+        
 
     }
     public function notFound():void{
@@ -34,7 +34,7 @@ class User_Controller extends Controller {
         catch(Exception $er){
             echo $er->getMessage();
         }
-        redirect('auth?login=yes');
+        redirect('http://localhost:8080/todo-list/auth');
 
     }
     public function friends():void{
@@ -44,7 +44,7 @@ class User_Controller extends Controller {
             $users = [];
             try{
                 $this->model->getUser();
-                $friends = $this->model->getFriends($_GET['userId']);
+                $friends = $this->model->getFriends($_SESSION['userId']);
                 if(isset($_POST['friend_name'])){             // Проверка, если ищет пользователя
                     $users = $this->model->getAllUsers();
                 }
@@ -62,10 +62,12 @@ class User_Controller extends Controller {
             );
         }
         else {
-            redirect('auth?login=yes');
+            redirect('http://localhost:8080/todo-list/auth');
         }
     }
-
+    public function tasks():void{
+        $this->view->generatePage('tasks_template.php');
+    }
     public function settings():void{
         $this->view->generatePage('settings_template.php');
 
@@ -78,7 +80,7 @@ class User_Controller extends Controller {
     public function addFriend():void{
         try{
             $this->model->addFriend($_GET['userId'],$_GET['friendId']);
-            redirect("user/friends");
+            redirect("http://localhost:8080/todo-list/user/friends");
         }
         catch(Exception $er){
             echo($er->getMessage());
@@ -97,13 +99,13 @@ class User_Controller extends Controller {
 
     public function upload(){
         $this->model->addPicture();
-        redirect('user?userId=' . $_GET['userId']);
+        redirect('http://localhost:8080/todo-list/user');
     }
 
     public function acceptRequest(){
         try{
             $this->model->changeStatus('accepted');
-            redirect('users/requests');
+            redirect('http://localhost:8080/todo-list/users/requests');
         }
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
@@ -112,7 +114,7 @@ class User_Controller extends Controller {
     public function rejectRequest(){
         try{
             $this->model->changeStatus('rejected');
-            redirect('users/requests');
+            redirect('http://localhost:8080/todo-list/users/requests');
         }
         catch(Exception $er){
             $this->view->generatePage('requests_template.php', ['error' => $er->getMessage()]);
@@ -122,7 +124,7 @@ class User_Controller extends Controller {
     public function unfriend():void{
         try {
             $this->model->deleteFromFriends($_GET['friendId']);
-            redirect('users/friends&userId=' . $_GET['userId']);
+            redirect('http://localhost:8080/todo-list/users/friends');
         } catch (Exception $er) {
             $this->view->generatePage('friends_list_template.php', ['error' => $er->getMessage()]);
         }
@@ -130,7 +132,7 @@ class User_Controller extends Controller {
     }
 
     public function deleteImage(){
-        $this->model->deletePicture($_GET['userId']);
-        redirect("user?userId=" . $_GET["userId"]);
+        $this->model->deletePicture($_SESSION['userId']);
+        redirect("http://localhost:8080/todo-list/user");
     }
 }

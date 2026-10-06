@@ -47,6 +47,7 @@ class Auth_Model extends Model{
         $ms->close();
         session_regenerate_id(true);
         $_SESSION['token'] = self::$token;
+        $_SESSION['userId'] = $user['idusers'];
         $_SESSION['name'] = $user['name'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['image'] = $user['image'];

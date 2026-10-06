@@ -1,16 +1,16 @@
 <div class="friend_list">
-    <?php AssetsManager::addScripts('scripts/friends_scripts.js')?>
+    <?php AssetsManager::addScripts('http://localhost:8080/todo-list/scripts/friends_scripts.js')?>
     <button class="add_friend" onclick="openAddFriendsForm()">
-        <img src="images/add.png" alt="404"> 
+        <img src="http://localhost:8080/todo-list/images/add.png" alt="404"> 
         Добавить друга
     </button>
     <?php if(count($data['friends']) != 0){
         foreach($data['friends'] as $friend){?>
         <article class="friend_card">
-            <img src="<?=$friend['image']?>" alt="404" class="friend_image">
+            <img src="<?="http://localhost:8080/todo-list/" . $friend['image']?>" alt="404" class="friend_image">
             <span class="friend_name"><?=$friend['name']?></span>
             <a class="unfriend_button" href=<?="user/friends/unfriend&friendId=" . $friend['id']?>>
-                <img class="unfriend_img" src="images/x.png" alt="404">
+                <img class="unfriend_img" src="http://localhost:8080/todo-list/images/x.png" alt="404">
             </a>
         </article>
     <?php }}
@@ -44,7 +44,7 @@
                                 }
                             ?>
                             <a class="<?=$className?>" name="<?="friend_" . $key?>" href=<?=$urlFriend?>>
-                                <img class="friend_image" src="<?=$friend['image']?>" alt="404">
+                                <img class="friend_image" src="<?="http://localhost:8080/todo-list/" . $friend['image']?>" alt="404">
                                 <?=$friend['name'] . " "?>
                                 <span class="user_status"><?=$status?></span>
                             </a>

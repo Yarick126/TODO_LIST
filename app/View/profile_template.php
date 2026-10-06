@@ -1,8 +1,10 @@
 <div class="profile">
     <div class="profile_photo">
         <div class="photo">
-            <img src="<?=$_SESSION['image']?>" alt="not found">
-            <a class="delete_image_link" href="<?="user/deleteImage"?>">x</a>
+            <img src="<?="http://localhost:8080/todo-list/" . $_SESSION['image']?>" alt="not found">
+            <a class="delete_image_link" href="<?="http://localhost:8080/todo-list/user/deleteImage"?>">
+                <img src="http://localhost:8080/todo-list/images/bin.png" alt="404">
+            </a>
         </div>
 
         <form class="file_upload_form" action="<?="user/upload"?>" method="POST" enctype="multipart/form-data">
@@ -15,7 +17,7 @@
     </div>
 
     <div class="description">
-        <span id="name"><?="NAME: " . $_SESSION['name'] ?></span>
-        <span id="email"><?="EMAIL: " . $_SESSION['email'] ?></span>
+        <span id="name"><?="NAME: " . $data["user"]['name'] ?></span>
+        <span id="email"><?="EMAIL: " . $data["user"]['email'] ?></span>
     </div>
 </div>

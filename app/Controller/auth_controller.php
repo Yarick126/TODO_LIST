@@ -2,7 +2,7 @@
 <?php
 require_once 'app/utils.php';
 class Auth_Controller extends Controller{
-        function __construct(){
+    function __construct(){
         $this->model = new Auth_Model();
         $this->view = new View();
     }
@@ -18,7 +18,7 @@ class Auth_Controller extends Controller{
                 $id = $this->model->getUser([
                     'email' => $_POST['email'], 
                     'password' =>$_POST['password']]);
-                redirect("http://localhost:8080/todo-list/user?userId=" . $id);
+                redirect("http://localhost:8080/todo-list/user");
             }
             catch(Exception $er) {
                 $this->view->generatePage('login_template.php',[ 'errorMessage' => $er->getMessage()]);

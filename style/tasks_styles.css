@@ -1,0 +1,20 @@
+.tasks{
+    padding-top: 100px;
+    padding-left: 100px;
+
+}
+
+table {
+    margin:  0 auto;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #333;
+    padding: 10px 15px;
+}
+
+th {
+    background-color: #e0e0e0;
+}
